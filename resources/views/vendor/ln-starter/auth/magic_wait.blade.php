@@ -1,0 +1,134 @@
+@extends(config('ln-starter.auth.layout', 'layouts._auth'))
+
+@section('title', __('Confirm login'))
+
+@section('content')
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-4 py-12">
+	<div class="w-full max-w-md">
+		<!-- Animated Card -->
+		<div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+			<div class="p-8 text-center">
+				<!-- Animated Email Icon -->
+				<div class="relative inline-block mb-6">
+					<div class="w-20 h-20 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center animate-pulse">
+						<svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+						</svg>
+					</div>
+					<div class="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
+						<svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+							<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+						</svg>
+					</div>
+				</div>
+
+				<!-- Title & Description -->
+				<h2 class="text-2xl font-bold text-gray-900 mb-3">Check your email</h2>
+				<p class="text-gray-600 mb-6">
+					We sent a login link to your email. Open it on any device and we'll automatically log you in here.
+				</p>
+
+				<!-- Status Indicator -->
+				<div id="state" class="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 rounded-lg text-sm font-medium mb-6">
+					<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24">
+						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+						<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+					</svg>
+					<span>Waiting for confirmation...</span>
+				</div>
+
+				<!-- Timeout Message (hidden by default) -->
+				<div id="timeout-message" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 text-left">
+					<div class="flex">
+						<svg class="h-5 w-5 text-red-400 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+							<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+						</svg>
+						<div>
+							<h3 class="text-sm font-medium text-red-800 mb-1">Time expired</h3>
+							<p class="text-sm text-red-700 mb-3">The link is valid for {{ config('ln-starter.auth.token_expiry', 15) }} minutes.</p>
+							<a href="{{ route('login') }}" class="inline-flex items-center text-sm font-medium text-red-800 hover:text-red-900">
+								<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+								</svg>
+								Back to login
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<!-- Info Box -->
+				<div class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+					<div class="flex items-start text-left">
+						<svg class="w-5 h-5 text-gray-400 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+							<path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+						</svg>
+						<div class="text-sm text-gray-600">
+							<p class="font-medium text-gray-700 mb-1">Having trouble?</p>
+							<ul class="space-y-1 text-xs">
+								<li>• Check your spam or junk folder</li>
+								<li>• Make sure you entered the correct email</li>
+								<li>• The link expires in {{ config('ln-starter.auth.token_expiry', 15) }} minutes</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Footer -->
+			<div class="px-8 py-4 bg-gray-50 border-t border-gray-100 text-center">
+				<a href="{{ route('login') }}" class="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 transition-colors">
+					<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+					</svg>
+					Use a different email
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+@endsection
+
+@push('scripts')
+	<script>
+		const stateEl = document.getElementById('state');
+		const timeoutMsg = document.getElementById('timeout-message');
+		const MAX_ATTEMPTS = {{ config('ln-starter.auth.token_expiry', 15) * 30 }}; // token_expiry × 30 polls per minute (2s interval)
+		let attempts = 0;
+
+		const poll = async () => {
+			attempts++;
+
+			if (attempts > MAX_ATTEMPTS) {
+				stateEl.textContent = '{{ __('Waiting time expired.') }}';
+				timeoutMsg.style.display = 'block';
+				return;
+			}
+
+			if (attempts % 30 === 0) {
+				const minutesLeft = Math.ceil((MAX_ATTEMPTS - attempts) * 2 / 60);
+				stateEl.textContent = `{{ __('Waiting for confirmation') }}… (~${minutesLeft} min)`;
+			}
+
+			try {
+				const r = await fetch('{{ route('magic.status') }}', {
+					credentials: 'include',
+					headers: { 'X-Requested-With': 'XMLHttpRequest' }
+				});
+				const j = await r.json();
+
+				if (j.ok) {
+					stateEl.textContent = '{{ __('Success! Redirecting') }}…';
+					window.location.href = j.redirect || '/';
+					return;
+				}
+			} catch(e) {
+				console.error('Polling error:', e);
+				stateEl.textContent = '{{ __('Connection problem, trying again') }}…';
+			}
+
+			setTimeout(poll, 2000);
+		};
+
+		poll();
+	</script>
+@endpush
